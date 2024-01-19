@@ -8,7 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/printDan")
-public class Print8DanServlet extends HttpServlet {
+public class PrintDanServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -17,6 +17,7 @@ public class Print8DanServlet extends HttpServlet {
 
 		String inputedDan = request.getParameter("dan");
 		String inputedLimit = request.getParameter("limit");
+		String inputedColor = request.getParameter("color");
 		if (inputedDan == null) {
 			inputedDan = "1";
 		}
@@ -28,10 +29,12 @@ public class Print8DanServlet extends HttpServlet {
 		int dan = Integer.parseInt(inputedDan);
 		int limit = Integer.parseInt(inputedLimit);
 
-		response.getWriter().append(String.format("==%d단==<br>", dan));
+		response.getWriter().append(
+				String.format("<div style = \"color:%s;background-color:skyblue\">==%d단==</div>", inputedColor, dan));
 
 		for (int i = 1; i <= limit; i++) {
-			response.getWriter().append(String.format("%d * %d = %d<br>", dan, i, dan * i));
+			response.getWriter().append(
+					String.format("<div style =  \"color:%s\">%d * %d = %d</div>", inputedColor, dan, i, dan * i));
 		}
 
 	}
