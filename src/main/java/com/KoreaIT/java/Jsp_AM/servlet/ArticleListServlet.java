@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,11 +42,39 @@ public class ArticleListServlet extends HttpServlet {
 			response.getWriter().append("연결 성공!");
 
 			SecSql sql = new SecSql();
-			sql.append("SELECT * FROM article");
+			String searchKeyword = null;
+
+			int page = Integer.parseInt(request.getParameter("page"));
+
+			// 한페이지에 5개씩
+			int itemsInPage = 10;
+
+			int limitFrom = (page - 1) * itemsInPage;
+			int limitTake = itemsInPage;
+
+			Map<String, Object> args = new HashMap<>();
+			args.put("searchKeyword", searchKeyword);
+			args.put("limitTake", limitTake);
+			args.put("limitFrom", limitFrom);
+
+			if (args.containsKey("limitFrom")) {
+				limitFrom = (int) args.get("limitFrom");
+			}
+
+			if (args.containsKey("limitTake")) {
+				limitTake = (int) args.get("limitTake");
+			}
+
+			sql.append("SELECT * ");
+			sql.append("FROM article");
+			sql.append("ORDER BY id DESC");
+			if (limitFrom != -1) {
+				sql.append("LIMIT ?, ?;", limitFrom, limitTake);
+			}
 
 			List<Map<String, Object>> articleRows = DBUtil.selectRows(conn, sql);
-
 			request.setAttribute("articleRows", articleRows);
+			request.setAttribute("page1", page);
 			request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
 
 		} catch (SQLException e) {
