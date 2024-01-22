@@ -1,16 +1,29 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR"%>
+<%
+int dan = Integer.parseInt(request.getParameter("dan"));
+int limit = Integer.parseInt(request.getParameter("limit"));
+String color = request.getParameter("color");
+%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>Insert title here</title>
+<title>구구단 출력</title>
 </head>
 <body>
-	<h1>==8단==</h1>
-	<div>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-		Aperiam exercitationem mollitia nisi vel nam esse aliquid adipisci
-		perspiciatis earum quo explicabo illo tempore rerum assumenda
-		architecto. Itaque iste libero autem!</div>
+	<h3>
+		==<%=dan%>단==
+	</h3>
+	<%
+	for (int i = 1; i <= limit; i++) {
+	%>
+	<div style="color:<%=color %>;"><%=dan%>
+		*
+		<%=i%>=<%=dan * i%>
+	</div>
+	<%
+	}
+	%>
 </body>
 </html>
