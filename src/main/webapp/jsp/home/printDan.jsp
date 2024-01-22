@@ -18,12 +18,13 @@ String color = request.getParameter("color");
 	<%
 	for (int i = 1; i <= limit; i++) {
 	%>
-	<div style="color:<%=color%>;"><%=dan%>
+	<div style="color:<%=color%>"><%=dan%>
 		*
 		<%=i%>=<%=dan * i%>
 	</div>
 	<%
 	}
 	%>
+	<div style = "color:red"></div>
 </body>
 </html>

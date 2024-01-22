@@ -11,18 +11,28 @@ CREATE TABLE article(
 
 INSERT INTO article
 SET regDate = NOW(),
-title = '제목1',
-`body` = '내용1';
+title = '고양이',
+`body` = '냥냥';
 
 INSERT INTO article
 SET regDate = NOW(),
-title = '제목2',
-`body` = '내용2';
+title = '강아지',
+`body` = '멍멍';
 
 INSERT INTO article
 SET regDate = NOW(),
-title = '제목3',
-`body` = '내용3';
+title = '병아리',
+`body` = '삐약삐약';
+
+INSERT INTO article
+SET regDate = NOW(),
+title = '수달',
+`body` = '삑뺙';
+
+INSERT INTO article
+SET regDate = NOW(),
+title = '고수달',
+`body` = '초고수달';
 
 SELECT *
 FROM article
