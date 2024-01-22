@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+	pageEncoding="UTF-8"%>
 <%
 int dan = Integer.parseInt(request.getParameter("dan"));
 int limit = Integer.parseInt(request.getParameter("limit"));
@@ -9,16 +9,16 @@ String color = request.getParameter("color");
 <html>
 <head>
 <meta charset="EUC-KR">
-<title>구구단 출력</title>
+<title>援ш뎄�떒 異쒕젰</title>
 </head>
 <body>
 	<h3>
-		==<%=dan%>단==
+		==<%=dan%>�떒==
 	</h3>
 	<%
 	for (int i = 1; i <= limit; i++) {
 	%>
-	<div style="color:<%=color %>;"><%=dan%>
+	<div style="color:<%=color%>;"><%=dan%>
 		*
 		<%=i%>=<%=dan * i%>
 	</div>
