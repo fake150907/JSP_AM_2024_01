@@ -4,7 +4,7 @@
 
 <%
 Map<String, Object> articleRow = (Map<String, Object>) request.getAttribute("articleRow");
-int id = (int) request.getAttribute("id");
+int id = (int) articleRow.get("id");
 %>
 <!DOCTYPE html>
 <html>
