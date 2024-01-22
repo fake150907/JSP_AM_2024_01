@@ -8,7 +8,7 @@ String color = request.getParameter("color");
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="EUC-KR">
+<meta charset="UTF-8">
 <title>구구단 출력</title>
 </head>
 <body>

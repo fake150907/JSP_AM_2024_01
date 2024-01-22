@@ -19,4 +19,14 @@
     <welcome-file>default.htm</welcome-file>
     <welcome-file>default.jsp</welcome-file>
   </welcome-file-list>
+  <servlet>
+    <description></description>
+    <display-name>ArticleServlet</display-name>
+    <servlet-name>ArticleServlet</servlet-name>
+    <servlet-class>com.KoreaIT.java.Jsp_AM.ArticleServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>ArticleServlet</servlet-name>
+    <url-pattern>/ArticleServlet</url-pattern>
+  </servlet-mapping>
 </web-app>
