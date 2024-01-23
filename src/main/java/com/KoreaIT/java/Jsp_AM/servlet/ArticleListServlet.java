@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,51 +29,40 @@ public class ArticleListServlet extends HttpServlet {
 			System.out.println("클래스가 없습니다.");
 			e.printStackTrace();
 		}
-
+		
 		String url = "jdbc:mysql://127.0.0.1:3306/JSP_AM?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
 		String user = "root";
 		String password = "";
-
 		Connection conn = null;
 
 		try {
 			conn = DriverManager.getConnection(url, user, password);
-			response.getWriter().append("연결 성공!");
 
-			SecSql sql = new SecSql();
-			String searchKeyword = null;
+			int page = 1;
 
-			int page = Integer.parseInt(request.getParameter("page"));
-
-			// 한페이지에 5개씩
-			int itemsInPage = 10;
-
-			int limitFrom = (page - 1) * itemsInPage;
-			int limitTake = itemsInPage;
-
-			Map<String, Object> args = new HashMap<>();
-			args.put("searchKeyword", searchKeyword);
-			args.put("limitTake", limitTake);
-			args.put("limitFrom", limitFrom);
-
-			if (args.containsKey("limitFrom")) {
-				limitFrom = (int) args.get("limitFrom");
+			if (request.getParameter("page") != null && request.getParameter("page").length() != 0) {
+				page = Integer.parseInt(request.getParameter("page"));
 			}
 
-			if (args.containsKey("limitTake")) {
-				limitTake = (int) args.get("limitTake");
-			}
+			int itemsInAPage = 10;
+			int limitFrom = (page - 1) * itemsInAPage;
 
-			sql.append("SELECT * ");
+			SecSql sql = SecSql.from("SELECT COUNT(*) AS cnt");
+			sql.append("FROM article");
+
+			int totalCnt = DBUtil.selectRowIntValue(conn, sql);
+			int totalPage = (int) Math.ceil(totalCnt / (double) itemsInAPage);
+
+			sql = SecSql.from("SELECT *");
 			sql.append("FROM article");
 			sql.append("ORDER BY id DESC");
-			if (limitFrom != -1) {
-				sql.append("LIMIT ?, ?;", limitFrom, limitTake);
-			}
+			sql.append("LIMIT ?, ?;", limitFrom, itemsInAPage);
 
 			List<Map<String, Object>> articleRows = DBUtil.selectRows(conn, sql);
+
+			request.setAttribute("page", page);
+			request.setAttribute("totalPage", totalPage);
 			request.setAttribute("articleRows", articleRows);
-			request.setAttribute("page1", page);
 			request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
 
 		} catch (SQLException e) {
@@ -88,6 +76,11 @@ public class ArticleListServlet extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
 	}
 
 }
