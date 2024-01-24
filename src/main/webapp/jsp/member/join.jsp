@@ -21,6 +21,7 @@ String loginId = "";
 		onclick="if(confirm('진짜 이동 할거야?')==false) return false;">naver</a>
 	<h2>회원가입</h2>
 	<script type="text/javascript">
+		
 		function passConfirm() {
 			var loginPw = document.getElementById('loginPw'); //비밀번호 
 			var loginPwchk = document.getElementById('loginPwchk'); //비밀번호 확인 값
@@ -36,41 +37,55 @@ String loginId = "";
 				confirmMsg.innerHTML = "비밀번호 불일치";
 			}
 		}
-
+		var JoinForm__submitDone = false;
 		function JoinForm__submit(form) {
-			form.loginId.value = form.loginId.value.trim();
-			form.loginId.value = form.loginPw.value.trim();
-			form.loginPwChk.value = form.loginPwChk.value.trim();
-			form.name.value = form.name.value.trim();
+			/* 교양으로 알면 좋은것  */
+			if (JoinForm__submitDone) {
+				alert('이미 처리중입니다.');
+				return;
+			}
+			var loginId = form.loginId.value.trim();
+			var loginPw = form.loginPw.value.trim();
+			var loginPwChk = form.loginPwChk.value.trim();
+			var name = form.name.value.trim();
 
-			console.log('form.loginId.value : ' + form.loginId.value);
-			console.log('form.loginPw.value : ' + form.loginPw.value);
-			console.log('form.loginPwChk.value : ' + form.loginPwChk.value);
-			console.log('form.name.value : ' + form.name.value);
-			if (form.loginId.value.length == 0) {
+			console.log('form.loginId.value : ' + loginId);
+			console.log('form.loginPw.value : ' + loginPw);
+			console.log('form.loginPwChk.value : ' + loginPwChk);
+			console.log('form.name.value : ' + name);
+			if (loginId.length == 0) {
 				alert('아이디를 입력해주세요');
 				form.loginId.focus();
 				return;
 			}
-			if (form.loginPw.value.length == 0) {
+			if (loginPw.length == 0) {
 				alert('비밀번호를 입력해주세요');
 				form.loginPw.focus();
 				return;
 			}
-			if (form.loginPwChk.value.length == 0) {
+			if (loginPwChk.length == 0) {
 				alert('비밀번호 확인을 입력해주세요');
 				form.loginPwChk.focus();
 				return;
 			}
-			if (form.name.value.length == 0) {
+
+			if (loginPw != loginPwChk) {
+				alert('비밀번호가 일치하지 않습니다.');
+				form.loginPw.focus();
+				return;
+			}
+			if (name.length == 0) {
 				alert('이름을 입력해주세요');
 				form.name.focus();
 				return;
 			}
+			JoinForm__submitDone = true;
+			form.submit();
 		}
 	</script>
+
 	<form method="POST" action="dojoin"
-		onsubmit="JoinForm__submit('this'); return false;">
+		onsubmit="JoinForm__submit(this); return false;">
 		<div>
 			로그인 아이디 : <input autocomplete="off" type="text"
 				placeholder="사용할 아이디를 입력해주세요." name="loginId" style="width: 200px" />
@@ -89,8 +104,7 @@ String loginId = "";
 		</div>
 		<div>
 			로그인 비밀번호 확인 : <input type="text" autocomplete="off"
-				placeholder="위의 비밀번호가 같은지 확인해주세요." name="loginPwChk"
-				class="loginPwChk" />
+				placeholder="비밀번호를 확인해주세요." name="loginPwChk" class="loginPwChk" />
 			<div class="confirmMsg"></div>
 		</div>
 		<div>

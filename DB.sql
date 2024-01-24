@@ -17,6 +17,9 @@ CREATE TABLE `member`(
     `name` CHAR(100) NOT NULL
 );
 
+#############################################
+# article 테이블 데이터 넣기.
+
 INSERT INTO article
 SET regDate = NOW(),
 title = '고양이',
@@ -55,3 +58,39 @@ title = CONCAT('제목__', RAND()),
 SELECT *
 FROM article
 ORDER BY id DESC;
+#################################
+# member 테이블 데이터 넣기
+INSERT INTO `member`
+SET regDate = NOW(),
+loginId = 'loginId1',
+loginPw = 'loginPw1',
+`name` = '고먐미';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+loginId = 'loginId2',
+loginPw = 'loginPw2',
+`name` = '강아지';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+loginId = 'loginId3',
+loginPw = 'loginPw3',
+`name` = '고수달';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+loginId = 'loginId4',
+loginPw = 'loginPw4',
+`name` = '병아리';
+
+INSERT INTO `member`
+SET regDate = NOW(),
+loginId = 'loginId5',
+loginPw = 'loginPw5',
+`name` = '코끼리';
+
+SELECT *
+FROM `member`
+ORDER BY id DESC;
+

@@ -47,7 +47,8 @@ public class MemberDoJoinServlet extends HttpServlet {
 
 			int id = DBUtil.insert(conn, sql);
 
-			response.getWriter().append(String.format("<script>alert('%s님 환영합니다.'); history.go(-2);</script>", name));
+			response.getWriter().append(String.format(
+					"<script>alert('회원가입이 완료되었습니다. %s님 환영합니다.'); location.replace(../article/list);</script>", name));
 
 		} catch (SQLException e) {
 			System.out.println("에러 : " + e);
