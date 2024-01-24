@@ -13,6 +13,13 @@ String loginId = "";
 <title>회원가입 페이지</title>
 </head>
 <body>
+
+	<div>
+		<a style="color: green" href="../home/main">메인으로 돌아가기</a>
+	</div>
+	<a href="http://www.naver.com"
+		onclick="if(confirm('진짜 이동 할거야?')==false) return false;">naver</a>
+	<h2>회원가입</h2>
 	<script type="text/javascript">
 		function passConfirm() {
 			var loginPw = document.getElementById('loginPw'); //비밀번호 
@@ -30,25 +37,43 @@ String loginId = "";
 			}
 		}
 
-		function checkid() {
-			var loginId = document.getElementById('loginId').value;
-			if (loginId ==
-	<%for (Map<String, Object> memberRow : memberRows) {
-	loginId = (String) memberRow.get("loginId");
-}%>
-		) {
-				
-			}
+		function JoinForm__submit(form) {
+			form.loginId.value = form.loginId.value.trim();
+			form.loginId.value = form.loginPw.value.trim();
+			form.loginPwChk.value = form.loginPwChk.value.trim();
+			form.name.value = form.name.value.trim();
 
+			console.log('form.loginId.value : ' + form.loginId.value);
+			console.log('form.loginPw.value : ' + form.loginPw.value);
+			console.log('form.loginPwChk.value : ' + form.loginPwChk.value);
+			console.log('form.name.value : ' + form.name.value);
+			if (form.loginId.value.length == 0) {
+				alert('아이디를 입력해주세요');
+				form.loginId.focus();
+				return;
+			}
+			if (form.loginPw.value.length == 0) {
+				alert('비밀번호를 입력해주세요');
+				form.loginPw.focus();
+				return;
+			}
+			if (form.loginPwChk.value.length == 0) {
+				alert('비밀번호 확인을 입력해주세요');
+				form.loginPwChk.focus();
+				return;
+			}
+			if (form.name.value.length == 0) {
+				alert('이름을 입력해주세요');
+				form.name.focus();
+				return;
+			}
 		}
 	</script>
-
-	<h2>회원가입</h2>
-
-	<form method="POST" action="dojoin">
+	<form method="POST" action="dojoin"
+		onsubmit="JoinForm__submit('this'); return false;">
 		<div>
-			아이디 : <input type="text" placeholder="사용할 아이디를 입력해주세요."
-				name="loginId" style="width: 200px" />
+			로그인 아이디 : <input autocomplete="off" type="text"
+				placeholder="사용할 아이디를 입력해주세요." name="loginId" style="width: 200px" />
 		</div>
 		<div>
 			<input type="hidden" name="decide_id" id="decide_id">
@@ -59,19 +84,25 @@ String loginId = "";
 			</p>
 		</div>
 		<div>
-			비밀번호 : <input type="text" placeholder="사용할 비밀번호를 입력해주세요."
-				name="loginPw" class="loginPw" />
+			로그인 비밀번호 : <input type="text" autocomplete="off"
+				placeholder="사용할 비밀번호를 입력해주세요." name="loginPw" class="loginPw" />
 		</div>
 		<div>
-			비밀번호 확인 : <input type="text" placeholder="위의 비밀번호가 같은지 확인해주세요."
-				name="loginPwchk" class="loginPwchk" />
+			로그인 비밀번호 확인 : <input type="text" autocomplete="off"
+				placeholder="위의 비밀번호가 같은지 확인해주세요." name="loginPwChk"
+				class="loginPwChk" />
 			<div class="confirmMsg"></div>
 		</div>
 		<div>
-			이름 : <input type="text" placeholder="성함을 입력해주세요." name="name" />
+			이름 : <input type="text" autocomplete="off" placeholder="성함을 입력해주세요."
+				name="name" />
 		</div>
 		<button type="submit">회원가입</button>
 	</form>
+
+	<div>
+		<a style="color: green" href="../article/list">리스트로 돌아가기</a>
+	</div>
 
 </body>
 </html>
