@@ -8,6 +8,9 @@ List<Map<String, Object>> articleRows = (List<Map<String, Object>>) request.getA
 int cPage = (int) request.getAttribute("page");
 int totalPage = (int) request.getAttribute("totalPage");
 int totalPageNation = (int) request.getAttribute("totalPageNation");
+int pageNumber = (cPage - 1) / 10;
+int pageStartNum = pageNumber * 10 + 1;
+int pageEndNum = Math.min(pageStartNum + 9, totalPage);
 %>
 <!DOCTYPE html>
 <html>
@@ -38,7 +41,7 @@ int totalPageNation = (int) request.getAttribute("totalPageNation");
 			<%
 			for (Map<String, Object> articleRow : articleRows) {
 			%>
-			<tr style="text-align: center;">
+			<tr style="text-align: left;">
 				<td><%=articleRow.get("id")%></td>
 				<td><%=articleRow.get("regDate")%></td>
 				<td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("title")%></a></td>
@@ -74,7 +77,7 @@ int totalPageNation = (int) request.getAttribute("totalPageNation");
 		}
 		%>
 		<%
-		for (int i = 1; i <= totalPageNation; i++) {
+		for (int i = pageStartNum; i <= pageEndNum; i++) {
 		%>
 		<a class="<%=cPage == i ? "cPage" : ""%>" href="list?page=<%=i%>"><%=i%></a>
 		<%
@@ -83,14 +86,11 @@ int totalPageNation = (int) request.getAttribute("totalPageNation");
 		<%
 		if (totalPage > cPage) {
 		%>
-		<a href="list?page=<%=totalPage%>">▶▶</a>
+		<a href="list?page=<%=Math.min(pageStartNum + 10, totalPage)%>">▶▶</a>
 		<%
 		}
 		%>
 	</div>
-
-
-
 
 </body>
 </html>

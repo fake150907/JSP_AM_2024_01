@@ -1,4 +1,4 @@
-package com.KoreaIT.java.Jsp_AM.servlet;
+package com.KoreaIT.java.Jsp_AM.article.servlet;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -15,8 +15,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-@WebServlet("/article/doDelete")
-public class ArticleDeleteServlet extends HttpServlet {
+@WebServlet("/article/detail")
+public class ArticleDetailServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -41,14 +41,13 @@ public class ArticleDeleteServlet extends HttpServlet {
 
 			int id = Integer.parseInt(request.getParameter("id"));
 
-			SecSql sql = SecSql.from("DELETE");
-			sql.append("FROM article");
-			sql.append("WHERE id = ?;", id);
+			SecSql sql = new SecSql();
+			sql.append("SELECT * FROM article WHERE id = ?;", id);
 
-			DBUtil.delete(conn, sql);
+			Map<String, Object> articleRow = DBUtil.selectRow(conn, sql);
 
-			response.getWriter()
-					.append(String.format("<script>alert('%d번 글이 삭제되었습니다.'); location.replace('list');</script>", id));
+			request.setAttribute("articleRow", articleRow);
+			request.getRequestDispatcher("/jsp/article/detail.jsp").forward(request, response);
 
 		} catch (SQLException e) {
 			System.out.println("에러 : " + e);
@@ -63,4 +62,8 @@ public class ArticleDeleteServlet extends HttpServlet {
 		}
 	}
 
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doGet(request, response);
+	}
 }

@@ -9,6 +9,14 @@ CREATE TABLE article(
     `body` TEXT NOT NULL
 );
 
+CREATE TABLE `member`(
+    id INT(10) UNSIGNED NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    regDate DATETIME NOT NULL,
+    loginId CHAR(30) NOT NULL,
+    loginPw CHAR(200) NOT NULL,
+    `name` CHAR(100) NOT NULL
+);
+
 INSERT INTO article
 SET regDate = NOW(),
 title = '고양이',
@@ -33,6 +41,16 @@ INSERT INTO article
 SET regDate = NOW(),
 title = '고수달',
 `body` = '초고수달';
+
+INSERT INTO article
+SET regDate = NOW(),
+title = '코끼리',
+`body` = '뿌우뿌우';
+
+INSERT INTO article
+SET regDate = NOW(),
+title = CONCAT('제목__', RAND()),
+`body` = CONCAT('내용__',RAND());
 
 SELECT *
 FROM article
