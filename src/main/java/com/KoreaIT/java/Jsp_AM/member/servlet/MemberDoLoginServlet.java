@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.KoreaIT.java.Jsp_AM.config.Config;
 import com.KoreaIT.java.Jsp_AM.exception.SQLErrorException;
+import com.KoreaIT.java.Jsp_AM.member.service.MemberService;
 import com.KoreaIT.java.Jsp_AM.util.DBUtil;
 import com.KoreaIT.java.Jsp_AM.util.SecSql;
 
@@ -33,18 +34,14 @@ public class MemberDoLoginServlet extends HttpServlet {
 		}
 
 		Connection conn = null;
-
+		MemberService memberService = new MemberService();
 		try {
 			conn = DriverManager.getConnection(Config.getDbUrl(), Config.getDbUser(), Config.getDbPw());
 
 			String loginId = request.getParameter("loginId");
 			String loginPw = request.getParameter("loginPw");
 
-			SecSql sql = SecSql.from("SELECT *");
-			sql.append("FROM `member`");
-			sql.append("WHERE loginId = ?;", loginId);
-
-			Map<String, Object> memberRow = DBUtil.selectRow(conn, sql);
+			Map<String, Object> memberRow = memberService.getMemberRow(conn, loginId, loginPw);
 
 			if (memberRow.isEmpty()) {
 				response.getWriter().append(String.format(
@@ -58,10 +55,7 @@ public class MemberDoLoginServlet extends HttpServlet {
 				return;
 			}
 
-			HttpSession session = request.getSession();
-			session.setAttribute("loginedMemberId", memberRow.get("id"));
-			session.setAttribute("loginedMemberLoginId", memberRow.get("loginId"));
-			session.setAttribute("loginedMember", memberRow);
+			memberService.setLoginedMember(request, memberRow);
 
 			response.getWriter()
 					.append(String.format(

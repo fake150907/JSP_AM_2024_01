@@ -53,20 +53,15 @@ public class ArticleListServlet extends HttpServlet {
 			int totalPage = (int) Math.ceil(totalCnt / (double) itemsInAPage);
 			int totalPageNation = (int) Math.ceil(totalPage / (double) itemsInAPage);
 
-			sql = SecSql.from("SELECT *");
-			sql.append("FROM article");
+			sql = SecSql.from("SELECT a.*, m.`name` AS writer");
+			sql.append("FROM `member` AS m");
+			sql.append("INNER JOIN article AS a");
+			sql.append("ON a.memberId = m.id");
 			sql.append("ORDER BY id DESC");
 			sql.append("LIMIT ?, ?;", limitFrom, itemsInAPage);
 
 			List<Map<String, Object>> articleRows = DBUtil.selectRows(conn, sql);
 			HttpSession session = request.getSession();
-
-			sql = SecSql.from("SELECT m.`name`");
-			sql.append("FROM `member` AS m");
-			sql.append("INNER JOIN article AS a");
-			sql.append("ON a.memberId = m.id;");
-
-			List<Map<String, Object>> memberNameRows = DBUtil.selectRows(conn, sql);
 
 			boolean isLogined = false;
 			int loginedMemberId = -1;
@@ -86,7 +81,6 @@ public class ArticleListServlet extends HttpServlet {
 			request.setAttribute("totalPage", totalPage);
 			request.setAttribute("totalPageNation", totalPageNation);
 			request.setAttribute("articleRows", articleRows);
-			request.setAttribute("memberNameRows", memberNameRows);
 			request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
 
 		} catch (SQLException e) {

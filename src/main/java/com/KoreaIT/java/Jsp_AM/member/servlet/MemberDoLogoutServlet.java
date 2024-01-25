@@ -4,12 +4,10 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Map;
 
 import com.KoreaIT.java.Jsp_AM.config.Config;
 import com.KoreaIT.java.Jsp_AM.exception.SQLErrorException;
-import com.KoreaIT.java.Jsp_AM.util.DBUtil;
-import com.KoreaIT.java.Jsp_AM.util.SecSql;
+import com.KoreaIT.java.Jsp_AM.member.service.MemberService;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -33,14 +31,11 @@ public class MemberDoLogoutServlet extends HttpServlet {
 		}
 
 		Connection conn = null;
-
+		MemberService memberService = new MemberService();
 		try {
 			conn = DriverManager.getConnection(Config.getDbUrl(), Config.getDbUser(), Config.getDbPw());
 
-			HttpSession session = request.getSession();
-			session.removeAttribute("loginedMemberId");
-			session.removeAttribute("loginedMemberLoginId");
-			session.removeAttribute("loginedMember");
+			memberService.doLogout(request);
 
 			response.getWriter().append(
 					String.format("<script>alert('로그아웃 되었습니다.'); location.replace('../article/list');</script>"));

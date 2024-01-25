@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import com.KoreaIT.java.Jsp_AM.config.Config;
 import com.KoreaIT.java.Jsp_AM.exception.SQLErrorException;
+import com.KoreaIT.java.Jsp_AM.member.service.MemberService;
 import com.KoreaIT.java.Jsp_AM.util.DBUtil;
 import com.KoreaIT.java.Jsp_AM.util.SecSql;
 
@@ -31,6 +32,7 @@ public class MemberDoJoinServlet extends HttpServlet {
 		}
 
 		Connection conn = null;
+		MemberService memberService = new MemberService();
 
 		try {
 			conn = DriverManager.getConnection(Config.getDbUrl(), Config.getDbUser(), Config.getDbPw());
@@ -39,11 +41,7 @@ public class MemberDoJoinServlet extends HttpServlet {
 			String loginPw = request.getParameter("loginPw");
 			String name = request.getParameter("name");
 
-			SecSql sql = SecSql.from("SELECT COUNT(*) AS cnt");
-			sql.append("FROM `member`");
-			sql.append("WHERE loginId = ?;", loginId);
-
-			boolean isJoinableLoginId = DBUtil.selectRowIntValue(conn, sql) == 0;
+			boolean isJoinableLoginId = memberService.isJoinableLoginId(conn, loginId);
 
 			if (isJoinableLoginId == false) {
 				response.getWriter().append(String.format(
@@ -51,13 +49,7 @@ public class MemberDoJoinServlet extends HttpServlet {
 				return;
 			}
 
-			sql = SecSql.from("INSERT INTO `member`");
-			sql.append("SET regDate = NOW(),");
-			sql.append("loginId = ?,", loginId);
-			sql.append("loginPw = ?,", loginPw);
-			sql.append("`name` = ?;", name);
-
-			int id = DBUtil.insert(conn, sql);
+			int id = memberService.doJoin(conn, loginId, loginPw, name);
 
 			response.getWriter().append(String.format(
 					"<script>alert('%s님, 회원가입이 완료되었습니다.'); location.replace('../article/list');</script>", name));

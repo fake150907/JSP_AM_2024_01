@@ -5,7 +5,6 @@
 
 <%
 List<Map<String, Object>> articleRows = (List<Map<String, Object>>) request.getAttribute("articleRows");
-List<Map<String, Object>> memberNameRows = (List<Map<String, Object>>) request.getAttribute("memberNameRows");
 int cPage = (int) request.getAttribute("page");
 int totalPage = (int) request.getAttribute("totalPage");
 int totalPageNation = (int) request.getAttribute("totalPageNation");
@@ -49,8 +48,9 @@ Map<String, Object> loginedMember = (Map<String, Object>) request.getAttribute("
 			<tr style="text-align: left;">
 				<td><%=articleRow.get("id")%></td>
 				<td><%=articleRow.get("regDate")%></td>
-				<td><a href="detail?id=<%=articleRow.get("id")%>"><%=articleRow.get("title")%></a></td>
-				<td><%=memberNameRows.get((int) articleRow.get("memberId") - 1).get("name")%></td>
+				<td><a
+					href="detail?id=<%=articleRow.get("id")%>&memberId=<%=articleRow.get("memberId")%>"><%=articleRow.get("title")%></a></td>
+				<td><%=articleRow.get("writer")%></td>
 			</tr>
 			<%
 			}
