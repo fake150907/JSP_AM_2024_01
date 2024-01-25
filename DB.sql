@@ -17,43 +17,52 @@ CREATE TABLE `member`(
     `name` CHAR(100) NOT NULL
 );
 
+ALTER TABLE article ADD COLUMN memberId INT(10) UNSIGNED NOT NULL;
+
 #############################################
 # article 테이블 데이터 넣기.
 
 INSERT INTO article
 SET regDate = NOW(),
 title = '고양이',
-`body` = '냥냥';
+`body` = '냥냥',
+memberId = 1;
 
 INSERT INTO article
 SET regDate = NOW(),
 title = '강아지',
-`body` = '멍멍';
+`body` = '멍멍',
+memberId = 2;
 
 INSERT INTO article
 SET regDate = NOW(),
 title = '병아리',
-`body` = '삐약삐약';
+`body` = '삐약삐약',
+memberId = 4;
 
 INSERT INTO article
 SET regDate = NOW(),
 title = '수달',
-`body` = '삑뺙';
+`body` = '삑뺙',
+memberId = 3;
 
 INSERT INTO article
 SET regDate = NOW(),
 title = '고수달',
-`body` = '초고수달';
+`body` = '초고수달',
+memberId = 3;
 
 INSERT INTO article
 SET regDate = NOW(),
 title = '코끼리',
-`body` = '뿌우뿌우';
+`body` = '뿌우뿌우',
+memberId = 5;
 
 INSERT INTO article
 SET regDate = NOW(),
 title = CONCAT('제목__', RAND()),
-`body` = CONCAT('내용__',RAND());
+`body` = CONCAT('내용__',RAND()),
+memberId = 3;
 
 SELECT *
 FROM article
@@ -93,4 +102,9 @@ loginPw = 'loginPw5',
 SELECT *
 FROM `member`
 ORDER BY id DESC;
+
+SELECT COUNT(*)
+FROM `member`
+WHERE loginId = 'poi' 
+AND loginPw = 'qweiop';
 

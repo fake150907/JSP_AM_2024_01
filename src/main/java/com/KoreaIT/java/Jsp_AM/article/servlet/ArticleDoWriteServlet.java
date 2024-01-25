@@ -32,7 +32,7 @@ public class ArticleDoWriteServlet extends HttpServlet {
 		Connection conn = null;
 
 		try {
-			conn = DriverManager.getConnection(Config.getDbUrl(), Config.getDbUser(), Config.getDbPassword());
+			conn = DriverManager.getConnection(Config.getDbUrl(), Config.getDbUser(), Config.getDbPw());
 
 			String title = request.getParameter("title");
 			String body = request.getParameter("body");

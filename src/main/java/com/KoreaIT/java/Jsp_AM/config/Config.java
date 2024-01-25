@@ -15,7 +15,7 @@ public class Config {
 		return "root";
 	}
 
-	public static String getDbPassword() {
+	public static String getDbPw() {
 		return "";
 	}
 

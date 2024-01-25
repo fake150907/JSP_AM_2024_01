@@ -1,13 +1,7 @@
-package com.KoreaIT.java.Jsp_AM.article.servlet;
+package com.KoreaIT.java.Jsp_AM.servlet;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 import java.util.Map;
-
-import com.KoreaIT.java.Jsp_AM.util.DBUtil;
-import com.KoreaIT.java.Jsp_AM.util.SecSql;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,8 +10,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebServlet("/article/write")
-public class ArticleWriteServlet extends HttpServlet {
+@WebServlet("/home/main")
+public class HomeMainServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -37,8 +31,8 @@ public class ArticleWriteServlet extends HttpServlet {
 		request.setAttribute("isLogined", isLogined);
 		request.setAttribute("loginedMemberId", loginedMemberId);
 		request.setAttribute("loginedMember", loginedMember);
-		
-		request.getRequestDispatcher("/jsp/article/write.jsp").forward(request, response);
+
+		request.getRequestDispatcher("/jsp/home/main.jsp").forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
