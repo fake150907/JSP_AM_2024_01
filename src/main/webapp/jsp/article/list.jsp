@@ -26,15 +26,9 @@ Map<String, Object> loginedMember = (Map<String, Object>) request.getAttribute("
 	<div>
 		<a href="../home/main">메인으로 이동</a>
 	</div>
-	<%
-	if (isLogined) {
-	%>
 	<div>
 		<a href="write">글쓰기</a>
 	</div>
-	<%
-	}
-	%>
 	<h2>게시물 목록</h2>
 
 	<table style="border-collapse: collapse; border-color: green"
