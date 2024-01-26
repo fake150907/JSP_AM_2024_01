@@ -13,6 +13,7 @@ public class MemberJoinServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 		request.getRequestDispatcher("/jsp/member/join.jsp").forward(request, response);
 	}
 
