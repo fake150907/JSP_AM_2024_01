@@ -34,39 +34,23 @@ public class MemberDoJoinServlet extends HttpServlet {
 		Connection conn = null;
 		MemberService memberService = new MemberService();
 
-		try {
-			conn = DriverManager.getConnection(Config.getDbUrl(), Config.getDbUser(), Config.getDbPw());
+		String loginId = request.getParameter("loginId");
+		String loginPw = request.getParameter("loginPw");
+		String name = request.getParameter("name");
 
-			String loginId = request.getParameter("loginId");
-			String loginPw = request.getParameter("loginPw");
-			String name = request.getParameter("name");
+		boolean isJoinableLoginId = memberService.isJoinableLoginId(conn, loginId);
 
-			boolean isJoinableLoginId = memberService.isJoinableLoginId(conn, loginId);
-
-			if (isJoinableLoginId == false) {
-				response.getWriter().append(String.format(
-						"<script>alert('%s는 이미 사용중입니다'); location.replace('../member/join');</script>", loginId));
-				return;
-			}
-
-			int id = memberService.doJoin(conn, loginId, loginPw, name);
-
-			response.getWriter().append(String.format(
-					"<script>alert('%s님, 회원가입이 완료되었습니다.'); location.replace('../article/list');</script>", name));
-
-		} catch (SQLException e) {
-			System.out.println("에러 : " + e);
-		} catch (SQLErrorException e) {
-			e.getOrigin().printStackTrace();
-		} finally {
-			try {
-				if (conn != null && !conn.isClosed()) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		if (isJoinableLoginId == false) {
+			response.getWriter().append(String
+					.format("<script>alert('%s는 이미 사용중입니다'); location.replace('../member/join');</script>", loginId));
+			return;
 		}
+
+		int id = memberService.doJoin(conn, loginId, loginPw, name);
+
+		response.getWriter().append(String
+				.format("<script>alert('%s님, 회원가입이 완료되었습니다.'); location.replace('../article/list');</script>", name));
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

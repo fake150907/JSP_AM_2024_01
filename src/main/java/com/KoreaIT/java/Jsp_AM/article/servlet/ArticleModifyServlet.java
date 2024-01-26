@@ -56,12 +56,7 @@ public class ArticleModifyServlet extends HttpServlet {
 
 			Map<String, Object> articleRow = DBUtil.selectRow(conn, sql);
 
-			sql = new SecSql();
-			sql.append("SELECT * FROM `member` WHERE id = ?;", loginedMemberId);
-
-			Map<String, Object> memberRow = DBUtil.selectRow(conn, sql);
-
-			if (articleRow.get("memberId") != memberRow.get("id")) {
+			if ((int) articleRow.get("memberId") != loginedMemberId) {
 				response.getWriter().append(String.format(
 						"<script>alert('수정할 권한이 없습니다. 돌아가라 인간.'); location.replace('../article/list');</script>"));
 				return;

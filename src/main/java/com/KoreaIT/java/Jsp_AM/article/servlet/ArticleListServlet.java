@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import com.KoreaIT.java.Jsp_AM.article.service.ArticleService;
 import com.KoreaIT.java.Jsp_AM.config.Config;
 import com.KoreaIT.java.Jsp_AM.util.DBUtil;
 import com.KoreaIT.java.Jsp_AM.util.SecSql;
@@ -32,68 +33,40 @@ public class ArticleListServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 
+		ArticleService articleService = new ArticleService();
 		Connection conn = null;
 
-		try {
-			conn = DriverManager.getConnection(Config.getDbUrl(), Config.getDbUser(), Config.getDbPw());
+		int page = 1;
 
-			int page = 1;
-
-			if (request.getParameter("page") != null && request.getParameter("page").length() != 0) {
-				page = Integer.parseInt(request.getParameter("page"));
-			}
-
-			int itemsInAPage = 10;
-			int limitFrom = (page - 1) * itemsInAPage;
-
-			SecSql sql = SecSql.from("SELECT COUNT(*) AS cnt");
-			sql.append("FROM article");
-
-			int totalCnt = DBUtil.selectRowIntValue(conn, sql);
-			int totalPage = (int) Math.ceil(totalCnt / (double) itemsInAPage);
-			int totalPageNation = (int) Math.ceil(totalPage / (double) itemsInAPage);
-
-			sql = SecSql.from("SELECT a.*, m.`name` AS writer");
-			sql.append("FROM `member` AS m");
-			sql.append("INNER JOIN article AS a");
-			sql.append("ON a.memberId = m.id");
-			sql.append("ORDER BY id DESC");
-			sql.append("LIMIT ?, ?;", limitFrom, itemsInAPage);
-
-			List<Map<String, Object>> articleRows = DBUtil.selectRows(conn, sql);
-			HttpSession session = request.getSession();
-
-			boolean isLogined = false;
-			int loginedMemberId = -1;
-			Map<String, Object> loginedMember = null;
-
-			if (session.getAttribute("loginedMemberId") != null) {
-				isLogined = true;
-				loginedMemberId = (int) session.getAttribute("loginedMemberId");
-				loginedMember = (Map<String, Object>) session.getAttribute("loginedMember");
-			}
-
-			request.setAttribute("isLogined", isLogined);
-			request.setAttribute("loginedMemberId", loginedMemberId);
-			request.setAttribute("loginedMember", loginedMember);
-
-			request.setAttribute("page", page);
-			request.setAttribute("totalPage", totalPage);
-			request.setAttribute("totalPageNation", totalPageNation);
-			request.setAttribute("articleRows", articleRows);
-			request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
-
-		} catch (SQLException e) {
-			System.out.println("에러 : " + e);
-		} finally {
-			try {
-				if (conn != null && !conn.isClosed()) {
-					conn.close();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+		if (request.getParameter("page") != null && request.getParameter("page").length() != 0) {
+			page = Integer.parseInt(request.getParameter("page"));
 		}
+
+		Map<String, Integer> totalMap = articleService.getTotalMap(conn);
+
+		List<Map<String, Object>> articleRows = articleService.getArticleRows(conn, page);
+
+		HttpSession session = request.getSession();
+
+		boolean isLogined = false;
+		int loginedMemberId = -1;
+		Map<String, Object> loginedMember = null;
+
+		if (session.getAttribute("loginedMemberId") != null) {
+			isLogined = true;
+			loginedMemberId = (int) session.getAttribute("loginedMemberId");
+			loginedMember = (Map<String, Object>) session.getAttribute("loginedMember");
+		}
+
+		request.setAttribute("isLogined", isLogined);
+		request.setAttribute("loginedMemberId", loginedMemberId);
+		request.setAttribute("loginedMember", loginedMember);
+
+		request.setAttribute("page", page);
+		request.setAttribute("totalPage", totalMap.get("totalPage"));
+		request.setAttribute("articleRows", articleRows);
+		request.getRequestDispatcher("/jsp/article/list.jsp").forward(request, response);
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)

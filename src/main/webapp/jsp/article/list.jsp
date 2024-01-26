@@ -7,7 +7,6 @@
 List<Map<String, Object>> articleRows = (List<Map<String, Object>>) request.getAttribute("articleRows");
 int cPage = (int) request.getAttribute("page");
 int totalPage = (int) request.getAttribute("totalPage");
-int totalPageNation = (int) request.getAttribute("totalPageNation");
 int pageNumber = (cPage - 1) / 10;
 int pageStartNum = pageNumber * 10 + 1;
 int pageEndNum = Math.min(pageStartNum + 9, totalPage);
