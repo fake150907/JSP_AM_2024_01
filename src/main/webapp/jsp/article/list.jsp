@@ -1,10 +1,11 @@
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Map"%>
+<%@ page import="com.KoreaIT.java.Jsp_AM.dto.Article"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
 <%
-List<Map<String, Object>> articleRows = (List<Map<String, Object>>) request.getAttribute("articleRows");
+List<Article> articleRows = (List<Article>) request.getAttribute("articleRows");
 int cPage = (int) request.getAttribute("page");
 int totalPage = (int) request.getAttribute("totalPage");
 int pageNumber = (cPage - 1) / 10;
@@ -18,7 +19,7 @@ Map<String, Object> loginedMember = (Map<String, Object>) request.getAttribute("
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8"">
+<meta charset="UTF-8">
 <title>게시물 목록</title>
 </head>
 <body>
@@ -42,14 +43,14 @@ Map<String, Object> loginedMember = (Map<String, Object>) request.getAttribute("
 		</thead>
 		<tbody>
 			<%
-			for (Map<String, Object> articleRow : articleRows) {
+			for (Article articleRow : articleRows) {
 			%>
 			<tr style="text-align: left;">
-				<td><%=articleRow.get("id")%></td>
-				<td><%=articleRow.get("regDate")%></td>
+				<td><%=articleRow.getId()%></td>
+				<td><%=articleRow.getRegDate()%></td>
 				<td><a
-					href="detail?id=<%=articleRow.get("id")%>&memberId=<%=articleRow.get("memberId")%>"><%=articleRow.get("title")%></a></td>
-				<td><%=articleRow.get("writer")%></td>
+					href="detail?id=<%=articleRow.getId()%>&memberId=<%=articleRow.getMemberId()%>"><%=articleRow.getTitle()%></a></td>
+				<td><%=articleRow.getExtra_writer()%></td>
 			</tr>
 			<%
 			}

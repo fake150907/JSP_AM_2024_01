@@ -64,6 +64,7 @@ public class ArticleModifyServlet extends HttpServlet {
 
 			request.setAttribute("articleRow", articleRow);
 			request.setAttribute("loginedMemberId", loginedMemberId);
+			
 			request.getRequestDispatcher("/jsp/article/modify.jsp").forward(request, response);
 
 		} catch (SQLException e) {
